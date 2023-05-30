@@ -1,0 +1,58 @@
+@import '../partials/vars.scss';
+.jobmatcher{
+    margin-top: 50px;
+
+    .jobmatcher__content{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        //background: red;
+
+        .jobmatcher__actions {
+            flex-basis: 40%;
+            //background-color: var(--light);
+            padding: 20px;
+            border-radius: var(--radius);
+            position: relative;
+
+            .jobmatcher__counter{
+                position: absolute;
+                top: -20px;
+                left:  -20px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                padding: 4px;
+            }
+        }
+        .jobmatcher__result {
+            flex-basis: 60%;
+            padding: 20px;
+            //border: 1px solid RGBA(var(--textColor-rgb) / 20%);
+
+            .jobmatcher__result-success{
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+
+                .jobmatcher__result-successItem{
+                    flex-basis: 50%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100%;
+
+                    canvas{
+                        width: 500px;
+                        height: 500px;
+                        max-width: 100%;
+                        margin: auto;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,60 @@
+@import '../partials/vars.scss';
+
+.summarizer {
+	background-color: var(--light);
+	margin-top: 50px;
+
+	.summarizer__content {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+
+		.summarizer__actions {
+			flex-basis: 40%;
+			
+			padding: 20px;
+			border-radius: var(--radius);
+			position: relative;
+
+			.summarizer__counter {
+				position: absolute;
+				top: -20px;
+				left: -20px;
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+				padding: 4px;
+			}
+		}
+
+		.summarizer__result {
+			flex-basis: 60%;
+			padding: 20px;
+			//border: 1px solid RGBA(var(--textColor-rgb) / 20%);
+
+			.summarizer__result-success {
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				height: 100%;
+
+				.summarizer__result-successItem {
+					flex-basis: 50%;
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+					height: 100%;
+
+					canvas {
+						width: 500px;
+						height: 500px;
+						max-width: 100%;
+						margin: auto;
+					}
+				}
+			}
+		}
+	}
+}
