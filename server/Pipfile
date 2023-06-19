@@ -19,6 +19,7 @@ uuid = "*"
 bson = "*"
 python-dotenv = "*"
 openai = "*"
+tiktoken = "*"
 
 [dev-packages]
 

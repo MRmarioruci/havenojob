@@ -1,0 +1,20 @@
+version: '3'
+services:
+  server:
+    container_name: havenojob-server
+    build:
+      context: server/
+      dockerfile: Dockerfile
+    network_mode: host
+    ports:
+      - 5000:5000
+  client:
+    container_name: havenojob-client
+    build:
+      context: client/
+      dockerfile: Dockerfile
+    network_mode: host
+    ports:
+      - 3000:3000
+    depends_on:
+      - server
