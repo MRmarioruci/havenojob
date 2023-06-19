@@ -1,85 +1,21 @@
-import {useState, useRef} from 'react';
-import Chart from 'chart.js/auto';
+import {useState} from 'react';
+import { getRandomLoadingMessage } from '../utils/misc';
 import '../scss/pages/JobMatcher.scss'
+import ChartComponent from './ChartComponent';
 
 function JobMatcher() {
-	const chartRef = useRef(null);
 	const [step, setStep] = useState(null);
 	const [candidate_job_title, setCandidate_job_title] = useState('');
 	const [candidate_profile, setCandidate_profile] = useState('');
+	const [summarize_profile, setSummarize_profile] = useState(false);
 	const [job_title, setJob_title] = useState('');
 	const [job_description, setJob_description] = useState('');
-	const [result, setResult] = useState({percentageHigh: 80, percentageLow: 45});
-	const getChartColor = () => {
-		if( result?.percentageLow <= 40 ){
-			return '249, 116, 118'
-		} else 	if( (result?.percentageLow >= 41) && (result?.percentageLow <= 64) ){
-			return '253, 196, 72'
-		} else if( (result?.percentageLow >= 65) && (result?.percentageLow <= 74) ){
-			return '179, 160, 207'
-		}else if( (result?.percentageLow >= 75) && (result?.percentageLow <= 100) ){
-			return '56, 193, 114'
-		}
-	}
-	const loadingMessages = [
-		"Processing your request while I consult the AI overlords. They're quite opinionated!",
-		"Loading... The AI robots are busy calculating the meaning of life. It's a complex algorithm.",
-		"Please wait while our AI assistant puts on its thinking cap and summons the knowledge you seek.",
-		"Loading... The AI is currently taking a crash course in quantum physics to better understand your query.",
-		"Hold tight! The AI is deep in meditation, contemplating the mysteries of the universe.",
-		"Analyzing your request using the power of AI and a sprinkle of digital magic. Results coming soon!",
-		"Loading... The AI is deciphering ancient hieroglyphics to decode the secrets hidden within your question.",
-		"Please be patient. The AI is attending a crash course in comedy to craft the perfect witty response.",
-		"Loading... The AI is searching the archives of the internet, uncovering ancient memes for your amusement.",
-		"Processing your request with the assistance of AI supercomputers. They're fueled by pixels and a dash of imagination."
-	];
-	
-	const getRandomLoadingMessage = () => {
-		const randomIndex = Math.floor(Math.random() * loadingMessages.length);
-		return loadingMessages[randomIndex];
-	}
-	const generateChart = () => {
-		const chartOptions = {
-			responsive: true,
-			maintainAspectRatio: false
-		};
-		const chartColor = getChartColor();
-		const chartData = {
-			labels: [
-			],
-			datasets: [{
-				label: 'Maximum',
-				data: [result.percentageHigh, 100 - result.percentageHigh],
-				backgroundColor: [
-					`rgba(${chartColor}, 1)`,
-					'rgba(255, 255, 255, 0.0)',
-				],
-				hoverOffset: 4
-			},
-			{
-				label: 'Minimum',
-				data: [result.percentageLow, 100 - result.percentageLow],
-				backgroundColor: [
-					`rgba(${chartColor}, 0.7)`,
-					'rgba(255, 255, 255, 0.0)',
-				],
-				hoverOffset: 4
-			}
-			]
-		};
-		if(chartRef.current){
-			new Chart(chartRef.current, {
-				type: 'doughnut',
-				data: chartData,
-				options: chartOptions
-			});
-		}
-	}
+	const [summarize_job, setSummarize_job] = useState(false);
+	const [result, setResult] = useState(null);
+	const [retriesRemaining, setRetriesRemaining] = useState(localStorage.getItem('jobmatcher__retries') || 5)
+
 	const submit = () => {
-		setStep('success')
-		setTimeout(() => {
-			generateChart();
-		}, 250)
+		setStep('loading')
 		fetch('/app/getJobMatch', {
 			method: "POST",
 			headers: {
@@ -90,16 +26,17 @@ function JobMatcher() {
 				candidate_profile: candidate_profile,
 				job_title: job_title,
 				job_description: job_description,
+				summarize_profile: summarize_profile,
+				summarize_job: summarize_job
 			})
 		})
 		.then((response) => response.json())
 		.then(data => {
 			if(data.status === 'ok'){
-				//setStep('success');
-				/* setResult(data.data);
-				setTimeout(() => {
-					generateChart();
-				}, 250) */
+				setStep('success');
+				setResult(data.data);
+				localStorage.setItem('jobmatcher__retries', retriesRemaining-1);
+				setRetriesRemaining(retriesRemaining-1);
 			}else{
 				setStep('error');
 			}
@@ -110,17 +47,15 @@ function JobMatcher() {
 		})
 	}
 	const canSubmit = () => {
-		return candidate_job_title && candidate_profile && job_title && job_description;
+		return candidate_job_title && candidate_profile && job_title && job_description && (retriesRemaining > 0);
 	}
 	return (
-		<div className="card card__secondary jobmatcher">
-			<div className="page__section-title">
+		<div className="jobmatcher">
+			<div className="text__gradient subheader">
 				Job Matcher
 			</div>
 			<div className="text__muted text__center font__16">
-				With job matcher you can instatly check if you or the candidate is a good match for a job description.
-				No more wasting time on reading through pages of job descriptions and trying to figure out whether you should take the next step.
-				Add your data quickly and get the match range.
+				Instantly check whether a candidate is the right fit for a role and vice-versa.
 			</div>
 			<div className="jobmatcher__content mtop--30">
 				<div className="jobmatcher__actions">
@@ -144,6 +79,13 @@ function JobMatcher() {
 									<span className="focus"></span>
 								</div>
 							</div>
+							<div className="form__group">
+								<input value={summarize_profile} onChange={e => setSummarize_profile(e.target.checked)} type="checkbox" />
+								<label>Generate a structured profile summary?</label>
+								<div className="text__muted font__12 mleft--25">
+									This will take longer to generate but will produce better results
+								</div>
+							</div>
 						</div>
 					</div>
 					<div className="card">
@@ -165,11 +107,34 @@ function JobMatcher() {
 								</textarea>
 								<span className="focus"></span>
 							</div>
+							<div className="form__group">
+								<input value={summarize_job} onChange={e => setSummarize_job(e.target.checked)} type="checkbox" />
+								<label>Generate a structured job summary?</label>
+								<div className="text__muted font__12 mleft--25">
+									This will take longer to generate but will produce better results
+								</div>
+							</div>
 						</div>
 					</div>
-					<div className="btn btn__success text__secondary btn__100 btn__rounded" disabled={!canSubmit()} onClick={submit}>
-						Check the match
-					</div>
+					{retriesRemaining > 0 ?
+						<>
+							<div className="btn btn__success text__secondary btn__100 btn__rounded" disabled={!canSubmit()} onClick={submit}>
+								Check the match
+							</div>
+							<div className="text__warning text__center">
+								<b>{retriesRemaining}</b> tries remaining.
+							</div>
+						</>
+						:
+						<>
+							<div className="text__warning text__center">
+								You have used all of your demo tokens
+							</div>
+							<a className='btn btn__primary text__secondary btn__100 btn__rounded' href='#preregister'>
+								Preregister for more. This is just a demo!
+							</a>
+						</>
+					}
 				</div>
 				<div className="jobmatcher__result">
 					{ step === null && 
@@ -193,13 +158,19 @@ function JobMatcher() {
 					{step === 'success' &&
 						<div className='jobmatcher__result-success'>
 							<div className="jobmatcher__result-successItem">
-								<canvas ref={chartRef} />
-							</div>
-							<div className="jobmatcher__result-successItem">
+								<div className="jobmatcher__result-successItem">
+									<ChartComponent result={result} />
+								</div>
 								<h4>The verdict is out</h4>
 								<div className="font__30">
 									There is a <b>{result?.percentageLow}</b>-<b>{result?.percentageHigh}</b>% Match!
 								</div>	
+							</div>
+							<div className="flex flex--row flex--wrap">
+								<div className="btn btn__sm" style={{ background: 'rgb(249, 116, 118)'}}>No match</div>
+								<div className="btn btn__sm" style={{ background: 'rgb(253, 196, 72)'}}>Low match</div>
+								<div className="btn btn__sm" style={{ background: 'rgb(179, 160, 207)'}}>Medium match</div>
+								<div className="btn btn__sm" style={{ background: 'rgb(56, 193, 114)'}}>Great match</div>
 							</div>
 						</div>
 					}
