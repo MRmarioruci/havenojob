@@ -12,7 +12,6 @@
 @import "partials/misc";
 @import "partials/dropdown";
 @import "partials/tabs";
-@import "partials/responsive";
 @import "partials/modal";
 @import "partials/loader";
 @import "partials/cards";
@@ -55,7 +54,6 @@ a{
 	overflow-x: hidden;
 	padding: 0px !important;
 	position: relative;
-	//background: url('../images/magicpattern-mesh-gradient-1682054574419.png');
 	background-size: cover;
 	background-repeat: no-repeat;
 	
@@ -70,8 +68,6 @@ a{
 		align-items: center;
 		z-index: 10;
 		background: var(--background);
-		//border-bottom: 1px solid RGBA(var(--textColor-rgb) / 50%);
-		//box-shadow: RGBA(var(--primary-rgb) / 10%) 0px 10px 15px -3px, RGBA(var(--primary-rgb) / 50%) 0px 4px 6px -2px;
 		
 		.page__header-menu{
 			width: 1500px;
@@ -207,11 +203,23 @@ a{
 				.page__main-textHeader{
 					font-size: 5em;
 					font-family: var(--secondaryFontFamily);
+					@media only screen and (max-width: 530px) {
+						font-size: 3em;
+					}
 				}
-				.page__main-textHeaderUnderlined{
-					padding-bottom: 10px;
-					border-bottom: 4px solid var(--primary);
-					color: var(--primary);
+				.page__main-subtextHeader{
+					@media only screen and (max-width: 530px) {
+						font-size: 14px !important;
+					}
+				}
+				/* .page__main-textHiglight{
+					@media only screen and (max-width: 530px) {
+						font-size: 3em;
+					}
+				} */
+				@media only screen and (max-width: 1300px) {
+					margin-top: 150px;
+					text-align: center;
 				}
 			}
 
@@ -258,6 +266,13 @@ a{
 					}
 				}
 			}
+			@media only screen and (max-width: 1580px) {
+				padding: 20px
+			}
+		}
+		@media only screen and (max-width: 1300px) {
+			display: flex;
+			flex-direction: column;
 		}
 	}	
 }
@@ -282,6 +297,9 @@ a{
 	font-size: 5rem;
 	font-weight: bold;
 	text-align: center;
+	@media only screen and (max-width: 530px) {
+		font-size: 3rem;
+	}
 }
 .subheader{
 	font-size: 3em !important;
@@ -341,4 +359,30 @@ collaboration-button_buttonText__dXPo2 {
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
+}
+.logo{
+	@media only screen and (max-width: 768px) {
+		width: 200px;
+	}
+}
+.menu__mob{
+	display: none;
+
+	.material-icons{
+		font-size: 45px !important;
+	}
+	@media only screen and (max-width: 1048px) {
+		display: inline-block;
+	}
+}
+.menu__desk{
+
+	.menu__desk-item{
+		width: auto;
+		display: inline-block;
+	}
+
+	@media only screen and (max-width: 1048px) {
+		display: none;
+	}
 }

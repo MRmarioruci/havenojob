@@ -1,13 +1,17 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { getRandomLoadingMessage } from '../utils/misc';
 import '../scss/pages/JobSummarizer.scss'
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 function JobSummarizer() {
 	const [step, setStep] = useState(null);
 	const [result, setResult] = useState();
+	const [resultText, setResultText] = useState('');
 	const [job_title, setJob_title] = useState('');
 	const [job_description, setJob_description] = useState('');
 	const [retriesRemaining, setRetriesRemaining] = useState(localStorage.getItem('jobsummarizer__retries') || 5)
+	const [copied, setCopied] = useState(null);
+	const resultRef = useRef(null);
 
 	const submit = () => {
 		setStep('loading')
@@ -25,9 +29,18 @@ function JobSummarizer() {
 		.then(data => {
 			if (data.status === 'ok') {
 				setResult(data.data);
+				setResultText(
+					data.data.replace(/<style[^>]*>.*<\/style>/gm, '')
+					.replace(/<script[^>]*>.*<\/script>/gm, '')
+					.replace(/<[^>]+>/gm, '')
+					.replace(/([\r\n]+ +)+/gm, '')
+				)
 				setStep('success');
 				localStorage.setItem('jobsummarizer__retries', retriesRemaining - 1);
 				setRetriesRemaining(retriesRemaining - 1);
+				setTimeout(() => {
+					if (resultRef.current) resultRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+				}, 150);
 			} else {
 				setStep('error');
 			}
@@ -71,7 +84,30 @@ function JobSummarizer() {
 						</div>
 					}
 					{step === 'success' &&
-						<div className='jobsummarizer__result-success' dangerouslySetInnerHTML={{ __html: result }}></div>
+						<div className='jobsummarizer__result-success'>
+							<div className="job-summarizer__result" ref={resultRef}></div>
+							<CopyToClipboard text={resultText} onCopy={() => setCopied(true)}>
+								<button className="btn btn__primary-soft jobsummarizer__result-successCopy">
+									{ copied ?
+										<>
+											<span className="material-icons font--20">
+												check
+											</span>
+											Copied
+										</>
+										:
+										<>
+											<span className="material-icons font--20">
+												copy_all
+											</span>
+											Copy
+										</>
+									}
+								</button>
+							</CopyToClipboard>
+							<div  dangerouslySetInnerHTML={{ __html: result }}>
+							</div>
+						</div>
 					}
 				</div>
 				<div className="jobsummarizer__actions">

@@ -57,5 +57,15 @@
                 }
             }
         }
+        @media only screen and (max-width: 1000px) {
+            flex-direction: column;
+        }
+    }
+    .jobmatcher__result-block {
+        display: none;
+
+        @media only screen and (max-width: 1000px) {
+            display: block;
+        }
     }
 }

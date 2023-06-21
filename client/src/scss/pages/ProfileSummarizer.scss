@@ -47,7 +47,6 @@
 				padding: 20px;
 				border-radius: var(--radius);
 				background: var(--background);
-				
 
 				.summarizer__result-successCopy{
 					position: absolute;
@@ -55,6 +54,20 @@
 					top: 15px;
 				}
 			}
+			@media only screen and (max-width: 1000px) {
+				flex-basis: unset;
+				height: 500px;
+			}
+		}
+		@media only screen and (max-width: 1000px) {
+			flex-direction: column;
+		}
+	}
+	.profile-summarizer__result{
+		display: none;
+
+		@media only screen and (max-width: 1000px) {
+			display: block;
 		}
 	}
 }

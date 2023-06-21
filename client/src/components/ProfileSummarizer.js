@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getRandomLoadingMessage } from '../utils/misc';
 import '../scss/pages/ProfileSummarizer.scss'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -7,9 +7,11 @@ function ProfileSummarizer() {
 	const [copied, setCopied] = useState(null);
 	const [step, setStep] = useState(null);
 	const [result, setResult] = useState();
+	const [resultText, setResultText] = useState('');
 	const [candidate_job_title, setCandidate_job_title] = useState('');
 	const [candidate_profile, setCandidate_profile] = useState('');
 	const [retriesRemaining, setRetriesRemaining] = useState(localStorage.getItem('profilesummarizer__retries') || 5)
+	const resultRef = useRef(null);
 
 	const submit = () => {
 		setStep('loading')
@@ -28,8 +30,17 @@ function ProfileSummarizer() {
 			if (data.status === 'ok') {
 				setStep('success');
 				setResult(data.data);
+				setResultText(
+					data.data.replace(/<style[^>]*>.*<\/style>/gm, '')
+					.replace(/<script[^>]*>.*<\/script>/gm, '')
+					.replace(/<[^>]+>/gm, '')
+					.replace(/([\r\n]+ +)+/gm, '')
+				)
 				localStorage.setItem('profilesummarizer__retries', retriesRemaining - 1);
 				setRetriesRemaining(retriesRemaining - 1);
+				setTimeout(() => {
+					if (resultRef.current) resultRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })	
+				}, 150);
 			} else {
 				setStep('error');
 			}
@@ -77,7 +88,8 @@ function ProfileSummarizer() {
 					}
 					{step === 'success' &&
 						<div className='summarizer__result-success'>
-							<CopyToClipboard text={result} onCopy={() => setCopied(true)}>
+							<div className="profile-summarizer__result" ref={resultRef}></div>
+							<CopyToClipboard text={resultText} onCopy={() => setCopied(true)}>
 								<button className="btn btn__primary-soft summarizer__result-successCopy">
 									{ copied ?
 										<>

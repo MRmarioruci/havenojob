@@ -62,7 +62,7 @@ function Preregister() {
 			</div>
 			{step === null &&
 				<div className="preregister__cards">
-					<div className="flex flex--row">
+					<div className="preregister__cards-inner">
 						<div className="card card__secondary preregister__card">
 							<h4>Unlimited</h4>
 							<div className="mtop--20">

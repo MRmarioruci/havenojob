@@ -7,6 +7,7 @@ import Preregister from './components/Preregister';
 import Footer from './components/Footer';
 import poggoImg from './images/poggo.png'
 import logo from './images/logo.png'
+import Dropdown from './utils/Dropdown';
 
 function App() {
 	const home = useRef(null)
@@ -39,22 +40,46 @@ function App() {
 		<div className="page">
 			<div className="page__header">
 				<div className='page__header-menu'>
-					<img src={logo} width="350" onClick={() => scrollTo('home')} alt="logo" className="pointer" />
-					<div className="float--right flex flex__row">
-						<a className="btn btn__transparent" onClick={() => scrollTo('profile')}>
-							Profile Summarizer
-						</a>
-						<a className="btn btn__transparent" onClick={() => scrollTo('jobSummary')}>
-							Job Summarizer
-						</a>
-						<a className="btn btn__transparent" onClick={() => scrollTo('jobMatcher')}>
-							Job Matcher
-						</a>
-						<a className="btn btn__inverted-outline btn-md btn__rounded page__header-menuItem" onClick={() => scrollTo('preregister')}>
-							<span className="material-icons">how_to_reg</span>&nbsp;
-							<span className="mtop--5">Preregister</span>
-						</a>
-					</div>
+					<img src={logo} width="350" onClick={() => scrollTo('home')} alt="logo" className="pointer logo" />
+					<div className="float--right">
+						<Dropdown isRight={true}>
+							<div className="btn btn__light menu__mob dropdown-trigger">
+								<span className="material-icons">menu</span>
+							</div>
+							<div className="dropdown__menu">
+								<div className="dropdown__content">
+									<a className="dropdown__item" onClick={() => scrollTo('profile')}>
+										Profile Summarizer
+									</a>
+									<a className="dropdown__item" onClick={() => scrollTo('jobSummary')}>
+										Job Summarizer
+									</a>
+									<a className="dropdown__item" onClick={() => scrollTo('jobMatcher')}>
+										Job Matcher
+									</a>
+									<a className="dropdown__item" onClick={() => scrollTo('preregister')}>
+										<span className="material-icons">how_to_reg</span>&nbsp;
+										<span className="mtop--5">Preregister</span>
+									</a>
+								</div>
+							</div>
+						</Dropdown>
+						<div className="flex flex__row menu__desk">
+							<a className="btn btn__transparent" onClick={() => scrollTo('profile')}>
+								Profile Summarizer
+							</a>
+							<a className="btn btn__transparent" onClick={() => scrollTo('jobSummary')}>
+								Job Summarizer
+							</a>
+							<a className="btn btn__transparent" onClick={() => scrollTo('jobMatcher')}>
+								Job Matcher
+							</a>
+							<a className="btn btn__inverted-outline btn-md btn__rounded page__header-menuItem" onClick={() => scrollTo('preregister')}>
+								<span className="material-icons">how_to_reg</span>&nbsp;
+								<span className="mtop--5">Preregister</span>
+							</a>
+						</div>
+					</div>						
 				</div>
 			</div>
 			<div className="page__main" ref={home}>
@@ -64,7 +89,7 @@ function App() {
 							The job market made
 							<span className="text__gradient mleft--10">easy.</span>
 						</h1>
-						<div className="font__20 mtop--20 text__semi-muted">
+						<div className="font__20 mtop--20 text__semi-muted page__main-subtextHeader">
 							A list of <b>AI</b> generative tools for helping both candidates and recruiters.
 							<br />
 							<small>(Yes we said the magic word, AI, AI, AI....).</small>

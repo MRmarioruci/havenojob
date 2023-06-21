@@ -47,7 +47,24 @@
 				padding: 20px;
 				border-radius: var(--radius);
 				background: var(--background);
+
+
+				.jobsummarizer__result-successCopy {
+					position: absolute;
+					right: 15px;
+					top: 15px;
+				}
 			}
+		}
+		@media only screen and (max-width: 1000px) {
+			flex-direction: column;
+		}
+	}
+	.job-summarizer__result {
+		display: none;
+
+		@media only screen and (max-width: 1000px) {
+			display: block;
 		}
 	}
 }

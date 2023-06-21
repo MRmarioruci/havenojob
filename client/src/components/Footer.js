@@ -1,41 +1,12 @@
-import { useState } from 'react';
 import '../scss/pages/Footer.scss'
 import logo from '../images/logo.png'
 
+const getToday = () => {
+	const currentDate = new Date();
+	const currentYear = currentDate.getFullYear();
+	return currentYear;
+}
 function Footer() {
-	const [step, setStep] = useState(null);
-	/* const submit = () => {
-		setStep('loading')
-		fetch('/app/getJobMatch', {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({
-				candidate_job_title: candidate_job_title,
-				candidate_profile: candidate_profile,
-				job_title: job_title,
-				job_description: job_description,
-				summarize_profile: summarize_profile,
-				summarize_job: summarize_job
-			})
-		})
-			.then((response) => response.json())
-			.then(data => {
-				if (data.status === 'ok') {
-					setStep('success');
-					setResult(data.data);
-					localStorage.setItem('Preregister__retries', retriesRemaining - 1);
-					setRetriesRemaining(retriesRemaining - 1);
-				} else {
-					setStep('error');
-				}
-			})
-			.catch((error) => {
-				console.log(error);
-				setStep('error');
-			})
-	} */
 	return (
 		<div className="card card__secondary footer">
 			<div className="footer__header">
@@ -86,6 +57,9 @@ function Footer() {
 						</a>
 					</div>
 				</div>
+			</div>
+			<div className="mtop--20 text__center">
+				Copyright © havenojob.me <span>{getToday()}</span>
 			</div>
 		</div>
 	);

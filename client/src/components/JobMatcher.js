@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useRef} from 'react';
 import { getRandomLoadingMessage } from '../utils/misc';
 import '../scss/pages/JobMatcher.scss'
 import ChartComponent from './ChartComponent';
@@ -13,6 +13,7 @@ function JobMatcher() {
 	const [summarize_job, setSummarize_job] = useState(false);
 	const [result, setResult] = useState(null);
 	const [retriesRemaining, setRetriesRemaining] = useState(localStorage.getItem('jobmatcher__retries') || 5)
+	const resultRef = useRef(null);
 
 	const submit = () => {
 		setStep('loading')
@@ -37,6 +38,9 @@ function JobMatcher() {
 				setResult(data.data);
 				localStorage.setItem('jobmatcher__retries', retriesRemaining-1);
 				setRetriesRemaining(retriesRemaining-1);
+				setTimeout(() => {
+					if (resultRef.current) resultRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+				}, 150);
 			}else{
 				setStep('error');
 			}
@@ -157,6 +161,7 @@ function JobMatcher() {
 					}
 					{step === 'success' &&
 						<div className='jobmatcher__result-success'>
+							<div className="profile-summarizer__result" ref={resultRef}></div>
 							<div className="jobmatcher__result-successItem">
 								<div className="jobmatcher__result-successItem">
 									<ChartComponent result={result} />
