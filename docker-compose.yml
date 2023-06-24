@@ -1,20 +1,46 @@
 version: '3.8'
 services:
+  db:
+    build: ./db
+    env_file:
+      - ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
+      - MYSQL_DATABASE=$DB_NAME
+    ports:
+      - $DB_LOCAL_PORT:$DB_DOCKER_PORT
+    restart: always
   server:
     container_name: havenojob-server
+    env_file:
+      - ./.env
     build:
       context: server/
       dockerfile: Dockerfile
     network_mode: host
     ports:
       - 5000:5000
+    restart: always
+    depends_on:
+      - db
+      - client
+      - phpmyadmin
   client:
     container_name: havenojob-client
     build:
       context: client/
       dockerfile: Dockerfile
-    network_mode: host
     ports:
-      - 80:80
+      - 3001:3001
+    restart: always
     depends_on:
-      - server
+      - db
+  phpmyadmin:
+    build:
+      context: .
+      dockerfile: Dockerfile.phpmyadmin
+    ports:
+      - 3000:80
+    depends_on:
+      - db
+    restart: always

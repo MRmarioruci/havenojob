@@ -20,6 +20,10 @@ bson = "*"
 python-dotenv = "*"
 openai = "*"
 tiktoken = "*"
+sqlalchemy = "*"
+flask-sqlalchemy = "*"
+pymysql = "*"
+cryptography = "*"
 
 [dev-packages]
 

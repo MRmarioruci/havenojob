@@ -1,10 +1,12 @@
 from utils import log, getStandardResponse, getResponseDict
+from flask import jsonify
 from dotenv import load_dotenv
+from sqlalchemy import text
 import json
 import os
 import openai
 import tiktoken
-load_dotenv(dotenv_path="core/.env")
+load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
 class AppModel:
@@ -144,17 +146,22 @@ class AppModel:
 		if response['data']: response['status'] = 'ok'
 		return response
 	
-	def preregister(self, email:str):
+	def preregister(self, email:str, SessionLocal):
 		response = getResponseDict()
+		with SessionLocal() as session:
+			try:
+				q = 'INSERT INTO `Emails`(`email`, `creationDate`) VALUES(:email, NOW())'
+				result = session.execute(text(q), {
+					"email": email
+				})
+				session.commit()
+				if result.lastrowid:
+					response['status'] = 'ok'
+					response['data'] = True
 
-		try:
-			file_path = './emails.txt'
-			file = open(file_path, 'a')
-			file.write(f"\n{email}")
-			file.close()
-			response['status'] = 'ok'
-		except:
-			log('ERROR', 'Could not write to the txt file!')
-			pass
+			except Exception as e:
+				response['data'] = True
+				response['status'] = 'ok'
+				log('ERROR', e)
 
 		return response

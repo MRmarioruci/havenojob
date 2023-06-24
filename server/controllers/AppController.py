@@ -5,6 +5,7 @@ from .validations import AppValidations
 from werkzeug.datastructures import MultiDict
 import utils
 load_dotenv(dotenv_path="core/.env")
+from core.database import Database
 
 model = AppModel()
 class AppController:
@@ -37,7 +38,6 @@ class AppController:
         return jsonify(response)
     
     def getProfileSummary(self):
-        print('here')
         response = utils.getResponseDict()
         form = AppValidations.ProfileForm(MultiDict(request.json))
         if form.validate():
@@ -51,6 +51,7 @@ class AppController:
         return jsonify(response)
     
     def getJobSummary(self):
+        print('I am here')
         response = utils.getResponseDict()
         form = AppValidations.JobSummaryForm(MultiDict(request.json))
         if form.validate():
@@ -64,11 +65,13 @@ class AppController:
         return jsonify(response)
 
     def preregister(self):
+        print('I am here')
         response = utils.getResponseDict()
         form = AppValidations.Preregister(MultiDict(request.json))
+        SessionLocal = Database().connect()
         if form.validate():
             email = form.email.data
-            response = model.preregister(email)
+            response = model.preregister(email, SessionLocal)
         else:
             response['data'] = form.errors
 
