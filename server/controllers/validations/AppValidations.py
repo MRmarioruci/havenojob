@@ -18,3 +18,9 @@ class JobSummaryForm(Form):
 
 class Preregister(Form):
     email = StringField('email', validators=[validators.InputRequired()])
+
+class CoverLetter(Form):
+    job_title = StringField('job_title', validators=[validators.InputRequired()])
+    company = StringField('company', validators=[validators.InputRequired()])
+    candidate_profile = StringField('candidate_profile', validators=[])
+    extraInstructions = StringField('extraInstructions', validators=[])

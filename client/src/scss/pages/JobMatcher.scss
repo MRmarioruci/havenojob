@@ -9,14 +9,17 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        //background: red;
+        background-color: var(--secondary);
+        border-radius: 20px;
+        border: 1px solid RGBA(var(--textColor-rgb) / 10%);
+        overflow: hidden;
 
         .jobmatcher__actions {
             flex-basis: 40%;
-            //background-color: var(--light);
             padding: 20px;
             border-radius: var(--radius);
             position: relative;
+            background-color: var(--light);
 
             .jobmatcher__counter{
                 position: absolute;

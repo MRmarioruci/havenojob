@@ -3,6 +3,7 @@ import './scss/main.scss'
 import JobMatcher from './components/JobMatcher';
 import ProfileSummarizer from './components/ProfileSummarizer';
 import JobSummarizer from './components/JobSummarizer';
+import CoverLetter from './components/CoverLetter';
 import Preregister from './components/Preregister';
 import Footer from './components/Footer';
 import poggoImg from './images/poggo.png'
@@ -15,6 +16,7 @@ function App() {
 	const profile = useRef(null)
 	const jobMatcher = useRef(null)
 	const jobSummary = useRef(null)
+	const coverLetter = useRef(null)
 	const scrollTo = (where) => {
 		switch (where) {
 			case 'profile':
@@ -31,6 +33,9 @@ function App() {
 				break;
 			case 'home':
 				if (home.current) home.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+				break;
+			case 'coverLetter':
+				if (coverLetter.current) coverLetter.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
 				break;
 			default:
 				break;
@@ -57,6 +62,9 @@ function App() {
 									<a className="dropdown__item" onClick={() => scrollTo('jobMatcher')}>
 										Job Matcher
 									</a>
+									<a className="dropdown__item" onClick={() => scrollTo('coverLetter')}>
+										Cover Letter
+									</a>
 									<a className="dropdown__item" onClick={() => scrollTo('preregister')}>
 										<span className="material-icons">how_to_reg</span>&nbsp;
 										<span className="mtop--5">Preregister</span>
@@ -73,6 +81,9 @@ function App() {
 							</a>
 							<a className="btn btn__transparent" onClick={() => scrollTo('jobMatcher')}>
 								Job Matcher
+							</a>
+							<a className="btn btn__transparent" onClick={() => scrollTo('coverLetter')}>
+								Cover letter
 							</a>
 							<a className="btn btn__inverted-outline btn-md btn__rounded page__header-menuItem" onClick={() => scrollTo('preregister')}>
 								<span className="material-icons">how_to_reg</span>&nbsp;
@@ -125,6 +136,9 @@ function App() {
 			</div>
 			<div ref={jobSummary}>
 				<JobSummarizer />
+			</div>
+			<div ref={coverLetter}>
+				<CoverLetter />
 			</div>
 			<div ref={preregister}>
 				<Preregister />

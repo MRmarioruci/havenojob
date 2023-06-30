@@ -8,12 +8,13 @@
 	margin: 15px;
 	position: relative;
 	word-break: break-word;
+	border: none;
 
 	.card__header{
 		padding: 10px;
 		display: flex;
 		flex-direction: row;
-		border-bottom: 1px solid RGBA(var(--textColor-rgb) / 5%);
+		//border-bottom: 1px solid RGBA(var(--textColor-rgb) / 5%);
 		font-size: 1.2rem;
 		font-weight: bold;
 	}
@@ -23,7 +24,7 @@
 	}
 	.card__footer{
 		padding: 10px;
-		border-top: 1px solid RGBA(var(--textColor-rgb) / 5%);
+		//border-top: 1px solid RGBA(var(--textColor-rgb) / 5%);
 		display: flex;
 		flex-direction: row;
 	}
@@ -65,7 +66,7 @@
 	border: 1px solid var(--primary);
 }
 .card__secondary{
-	border-top: 1px solid var(--secondary);
+	//border-top: 1px solid var(--secondary);
 	background: RGBA(var(--secondary-rgb) / 20%)
 }
 .card__secondary-bordered{

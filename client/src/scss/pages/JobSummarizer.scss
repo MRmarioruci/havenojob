@@ -11,6 +11,10 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
+		background-color: var(--secondary);
+		border-radius: 20px;
+		border: 1px solid RGBA(var(--textColor-rgb) / 10%);
+		overflow: hidden;
 
 		textarea {
 			resize: vertical;
@@ -19,10 +23,10 @@
 
 		.jobsummarizer__actions {
 			flex-basis: 40%;
-
 			padding: 20px;
 			border-radius: var(--radius);
 			position: relative;
+			background-color: var(--light);
 
 			.jobsummarizer__counter {
 				position: absolute;

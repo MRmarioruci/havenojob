@@ -18,6 +18,7 @@ class AppController:
         self.app_bp.add_url_rule('/getProfileSummary', view_func=self.getProfileSummary, methods=['POST'])
         self.app_bp.add_url_rule('/getJobSummary', view_func=self.getJobSummary, methods=['POST'])
         self.app_bp.add_url_rule('/preregister', view_func=self.preregister, methods=['POST'])
+        self.app_bp.add_url_rule('/generateCoverLetter', view_func=self.generateCoverLetter, methods=['POST'])
 
     def getJobMatch(self):
         response = utils.getResponseDict()
@@ -51,7 +52,6 @@ class AppController:
         return jsonify(response)
     
     def getJobSummary(self):
-        print('I am here')
         response = utils.getResponseDict()
         form = AppValidations.JobSummaryForm(MultiDict(request.json))
         if form.validate():
@@ -71,7 +71,22 @@ class AppController:
         SessionLocal = Database().connect()
         if form.validate():
             email = form.email.data
-            response = model.preregister(email, SessionLocal)
+            response['data'] = True
+            response['status'] = 'ok'
+        else:
+            response['data'] = form.errors
+
+        return jsonify(response)
+    
+    def generateCoverLetter(self):
+        response = utils.getResponseDict()
+        form = AppValidations.CoverLetter(MultiDict(request.json))
+        if form.validate():
+            job_title = form.job_title.data
+            company = form.company.data
+            candidate_profile = form.candidate_profile.data
+            extraInstructions = form.extraInstructions.data
+            response = model.generateCoverLetter(job_title, company, candidate_profile, extraInstructions)
         else:
             response['data'] = form.errors
 

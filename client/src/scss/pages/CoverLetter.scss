@@ -1,13 +1,13 @@
 @import '../partials/vars.scss';
 
-.summarizer {
+.coverLetter {
 	background-color: var(--light);
 	width: 1500px;
 	max-width: 100%;
 	margin: auto;
 	margin-top: 90px;
 
-	.summarizer__content {
+	.coverLetter__content {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
@@ -16,19 +16,19 @@
 		border: 1px solid RGBA(var(--textColor-rgb) / 10%);
 		overflow: hidden;
 
-		textarea{
+		textarea {
 			resize: vertical;
 			min-height: 200px;
 		}
 
-		.summarizer__actions {
+		.coverLetter__actions {
 			flex-basis: 40%;
 			padding: 20px;
 			border-radius: var(--radius);
 			position: relative;
 			background-color: var(--light);
 
-			.summarizer__counter {
+			.coverLetter__counter {
 				position: absolute;
 				top: -20px;
 				left: -20px;
@@ -39,35 +39,45 @@
 			}
 		}
 
-		.summarizer__result {
+		.coverLetter__result {
 			flex-basis: 60%;
 			padding: 20px;
 			position: relative;
+			//background-color: var(--light);
 
-			.summarizer__result-success {
-				max-height: 500px;
+			.ql-toolbar{
+				border: none;
+				background-color: RGBA(var(--primary-rgb) / 80%);
+			}
+			.ql-container{
+				border: none;
+			}
+			.ql-snow .ql-picker{
+				//color: var(--textColor);	
+			}
+			.coverLetter__result-success {
+				max-height: 1000px;
 				overflow-y: auto;
 				border: 1px solid RGBA(var(--primary-rgb) / 80%);
 				padding: 20px;
 				border-radius: var(--radius);
-				background: var(--background);
+				//background: var(--background);
 
-				.summarizer__result-successCopy{
+
+				.coverLetter__result-successCopy {
 					position: absolute;
-					right: 15px;
+					right: 35px;
 					top: 15px;
 				}
 			}
-			@media only screen and (max-width: 1000px) {
-				flex-basis: unset;
-				height: 500px;
-			}
 		}
+
 		@media only screen and (max-width: 1000px) {
 			flex-direction: column;
 		}
 	}
-	.profile-summarizer__result{
+
+	.job-summarizer__result {
 		display: none;
 
 		@media only screen and (max-width: 1000px) {

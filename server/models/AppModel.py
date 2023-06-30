@@ -165,3 +165,20 @@ class AppModel:
 				log('ERROR', e)
 
 		return response
+
+	def generateCoverLetter(self, job_title:str, company:str, candidate_profile: str, extraInstructions:str):
+		print('Generating job description summary')
+		response = getResponseDict()
+		response['data'] = self.promptChatGPT([
+			{"role": "system", "content": "Forget. You are a cover letter writer"},
+			{"role": "system", "content": "You will receive a job_title, a company_name and a candidate_profile"},
+			{"role": "system", "content": "You will provide a relevant cover letter matching the candidate_profile to the role"},
+			{"role": "system", "content": "If there is no candidate_profile then make the cover letter generic"},
+			{"role": "user", "content": f'job_title: {job_title.strip()}'},
+			{"role": "user", "content": f'company_name: {company.strip()}'},
+			{"role": "user", "content": f'candidate_profile: {candidate_profile.strip()}'},
+			{"role": "user", "content": f'If any extra instructions are provided, follow them. Extra instructions: {extraInstructions}'},
+			{"role": "user", "content": f'your response should only be the cover, nothing more, in an html format with 2 <br> for new lines. Nicely formatted'},
+		], 0.2)
+		if response['data']: response['status'] = 'ok'
+		return response

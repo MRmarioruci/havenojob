@@ -87,6 +87,7 @@ function Preregister() {
 					</div>
 					<div className="text__center">
 						<h3>You will get these features and more.</h3>
+						<h5 className="mtop--20">Contact me at <a>contact@marioruci.com</a> for more</h5>
 					</div>
 				</div>
 			}
