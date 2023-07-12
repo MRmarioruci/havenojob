@@ -13,6 +13,11 @@ Go to <a href="http://havenojob.me">http://havenojob.me</a> to view the demo
 - Frontend
   React.js
   SCSS
+  
+- Misc
+  Docker
 
 # Objective
-Experiment with ChatGPT prompting. Work a little bit more with flask and simple architecture separation for controllers and models.
+ - Experiment with <b>ChatGPT</b> prompting
+ - Work a little bit more with <b>flask</b> and simple architecture separation for controllers and models.
+ - Experiment with <b>Docker</b>
