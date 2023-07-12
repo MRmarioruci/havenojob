@@ -1,5 +1,5 @@
 -- Create a new user
-CREATE USER 'user'@'%' IDENTIFIED BY 'smilemalaka0343';
+CREATE USER 'user'@'%' IDENTIFIED BY 'pass';
 
 -- Grant privileges to the user
 GRANT ALL PRIVILEGES ON havenojob.* TO 'user'@'%';

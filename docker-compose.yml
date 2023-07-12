@@ -31,10 +31,11 @@ services:
       context: client/
       dockerfile: Dockerfile
     ports:
-      - 3001:3001
+      - 80:80
     restart: always
     depends_on:
       - db
+    network_mode: host
   phpmyadmin:
     build:
       context: .
